@@ -18,14 +18,14 @@ Goal: identify grain, candidate role (dimension / fact / junk / support), and kn
 | 10 | `invoice_lines` | 1 invoice line | `fact_invoices` detail | — |
 | 11 | `INVOICES` | 1 invoice | `fact_invoices` header | — |
 | 12 | `order_line_items` | 1 order line | `fact_sales` detail | — |
-| 13 | `ORDERS_2025` | 1 order | `fact_sales` header source | Has `legacy_reference` column not present in 2026 |
-| 14 | `ORDERS_2026` | 1 order | `fact_sales` header source | Missing `legacy_reference`, `gift_message`, `order_notes` vs. 2025 |
+| 13 | `ORDERS_2025` | 1 order | `fact_sales` header source | Has `LegacyRef` column not present in 2026 |
+| 14 | `ORDERS_2026` | 1 order | `fact_sales` header source | Missing `LegacyRef`, `GiftMessage`, `OrderNotes` vs. 2025 |
 | 15 | `payments` | 1 payment | `fact_payments` | — |
 | 16 | `products` | 1 product | `dim_product` core | — |
 | 17 | `regions` | 1 region | Redundant — info already present via `cities` | Do not merge separately (duplicate context) |
-| 18 | `sales_targets` | 1 region, 1 month | Support / comparison fact | — |
+| 18 | `sales_targets` | 1 month | Support / comparison fact (target vs. actual) | Missing 2025-01 and 2025-08 |
 | 19 | `security` | 1 employee | Support (RLS) | Header row stored as data |
 | 20 | `sheet1` | 1 shipment | Duplicate of `shipments` | Identical to `shipments` — import artifact, drop |
 | 21 | `shipments` | 1 shipment | `fact_shipments` | — |
-| 22 | `subcategories` | 1 subcategory | Merge into `dim_product` | — |
+| 22 | `subcategories` | 1 subcategory | Merge into `dim_product` | Combined category|subcategory column, needs split |
 | 23 | `user_details` | 1 customer (despite "user" naming) | Merge into `dim_customer` | Naming inconsistency: `user_id` here vs. `customer_id` elsewhere — same entity |
