@@ -13,7 +13,7 @@ Goal: identify grain, candidate role (dimension / fact / junk / support), and kn
 | 5 | `CUST_MASTER` | 1 customer (company) | `dim_customer` core | Contains test row (CustomerID = 999) to filter out |
 | 6 | `customer_contacts` | 1 contact (many per customer) | Merge into `dim_customer` | Grain mismatch vs. customer — must filter to primary contact before merge or it fans out |
 | 7 | `dim_order` | unclear — single unlinked ID column | Junk, drop | No relatable context |
-| 8 | `exchange_rates` | 1 currency, 1 date | Support | Not yet applied to facts (see limitations) |
+| 8 | `exchange_rates` | 1 currency, 1 date | Support | Not yet applied to facts |
 | 9 | `inventory` | 1 product (wide, 1 column per month) | `fact_inventory` | Wide format — needs unpivot |
 | 10 | `invoice_lines` | 1 invoice line | `fact_invoices` detail | — |
 | 11 | `INVOICES` | 1 invoice | `fact_invoices` header | — |
