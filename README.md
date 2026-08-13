@@ -51,7 +51,7 @@ All relationships are one-to-many with single-direction filters flowing from dim
 | `dim_product` | Standard | Deduplicated on business key (product code) |
 | `dim_campaign` | Standard | Static attributes only |
 | `dim_geo` | Role-playing | Connected to fact_sales twice (ship-to active, bill-to inactive via `USERELATIONSHIP`) |
-| `dim_date` | Shared/conformed | Built with `CALENDARAUTO()`, connects to nearly every fact |
+| `dim_order_flags` | Shared/conformed | Built with `CALENDARAUTO()`, connects to nearly every fact |
 | junk dimension | Junk | order_channel, status, priority — extracted from `fact_sales` to avoid low-cardinality flag columns living in the fact |
 
 ### Fact Tables
