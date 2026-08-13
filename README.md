@@ -1,5 +1,5 @@
 # Data-Modeling-From-Chaos-to-Star-Schema
-A Power BI data modeling project transforming a disorganized 17-table dataset into a governed star schema, covering dimension/fact design, data quality remediation, DAX measures, and row-level security.
+A Power BI data modeling project transforming a disorganized 17-table dataset into a governed star schema, covering dimension/fact design, data quality remediation, DAX measures, and row-level security. The dataset simulates a B2B sales/marketing/fulfillment system and was intentionally structured to reproduce common production data issues.
 
 ## Power Query Organization
 Queries are organized into numbered groups, separating the raw source layer from the tables built on top of it as the model grows:
@@ -9,7 +9,7 @@ Queries are organized into numbered groups, separating the raw source layer from
 | `01_Stage` | Raw queries, staged exactly as received from source systems — no transformations applied|
 | `02_Dimensions` | Descriptive, mostly static tables that provide context for analysis |
 | `03_Facts` | Transactional/event tables — records of something that happened, holding measures and dates, connected to dimensions via foreign keys |
-| `04_Support` | Tables that are neither fact nor dimension (e.g. the security table) |
+| `04_Support` | Tables that are neither dim nor fact (e.g., security) |
 | `Other Queries` | Newly connected tables/sources not yet triaged into a dimension, fact, or support role — working backlog |
 
 ## Data Source
@@ -41,3 +41,13 @@ Goal: identify grain, candidate role (dimension / fact / junk / support), and kn
 | 21 | `shipments` | 1 shipment | `fact_shipments` | — |
 | 22 | `subcategories` | 1 subcategory | Merge into `dim_product` | Combined category|subcategory column, needs split |
 | 23 | `user_details` | 1 customer (despite "user" naming) | Merge into `dim_customer` | Naming inconsistency: `user_id` here vs. `customer_id` elsewhere — same entity |
+
+## Data Model Architecture
+### Dimension Tables
+
+
+### Fact Tables
+
+## Tools Used
++ Power BI Desktop
++ Excel (source data)
