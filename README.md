@@ -56,7 +56,7 @@ All relationships are one-to-many with single-direction filters flowing from dim
 ### Fact Tables
 | Table | Grain | Type | Connects to |
 |---|---|---|---|
-| `fact_sales` | 1 order line | Transactional | dim_customer, dim_product, dim_date, dim_geo (ship/bill), junk dimension |
+| `fact_sales` | 1 order line | Transactional | dim_customer, dim_product, dim_date, dim_geo (ship/bill), dim_order_flags |
 | `fact_order_process` | 1 order | Accumulating snapshot | dim_customer, dim_date |
 | `fact_inventory` | 1 product, 1 month | Transactional | dim_product, dim_date |
 | `fact_campaign_spend` | 1 campaign, 1 day | Transactional | dim_campaign, dim_date |
