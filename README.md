@@ -63,6 +63,43 @@ All relationships are one-to-many with single-direction filters flowing from dim
 | `fact_promotion_coverage` | 1 campaign–product pair | Factless | dim_campaign, dim_product |
 | `fact_sales_targets` | 1 month | Standalone | dim_date |
 
+## Key Design Decisions
+
+Points in the build where more than one valid approach existed, and the reasoning behind the option chosen.
+
+**Entity naming resolved as "customer," not "user," despite the source system using both terms.**
+`user_details` and `customer_contacts` referred to the same real-world entity under different names — a common symptom of multiple departments naming the same thing differently. Resolved by majority usage: most source tables referenced "customer," so the model standardized on `dim_customer` and treated "user" as a legacy synonym rather than building two parallel entities or defaulting to whichever term appeared first.
+
+**RLS applied on `dim_customer`, not `dim_geo`.**
+Both dimensions carry regional context and both connect to `fact_sales`. `dim_customer` also connects to `fact_order_process`, so filtering there secures two fact tables through a single role instead of one. Extending `dim_geo` into every fact just to create a security surface would have altered fact grain with no reporting benefit.
+
+**`fact_order_process` built as an accumulating snapshot instead of separate order/shipment/invoice/payment facts.**
+`orders`, `shipments`, `invoices`, and `payments` describe stages of the same business process. Keeping them as separate facts would require repeated fact-to-fact joins (via shared dimensions) to compute any cross-stage metric. Consolidating into a single row per order — one date column per stage — reduces cycle-time calculations to a single `DATEDIFF` instead of a multi-hop query.
+
+**`dim_geo` implemented as a role-playing dimension rather than two separate tables.**
+`fact_sales` requires both a ship-to and a bill-to location. Duplicating the geography table would mean maintaining two physically separate but logically identical dimensions. Instead, `dim_geo` connects to `fact_sales` twice — one active relationship (ship-to), one inactive (bill-to) — with the inactive path invoked via `USERELATIONSHIP()` in DAX measures that need billing geography.
+
+**Low-cardinality order flags extracted into a junk dimension instead of left in the fact table.**
+`order_channel`, `status`, and `priority` are non-numeric attributes with no natural home in `dim_customer` or `dim_product`. Leaving them in `fact_sales` would add row weight without adding measure value. Bundling them into `dim_order_flags` keeps the fact table numeric while preserving filter capability on these attributes.
+
+**`fact_promotion_coverage` modeled as a factless fact, not as an attribute of `dim_campaign` or `dim_product`.**
+The campaign-to-product relationship is many-to-many and carries no numeric value of its own — only the fact that an association exists. A factless fact (foreign keys only, no measures) answers the actual business question — "was this product part of this campaign" — without forcing that relationship onto either dimension as a false one-to-many attribute.
+
+**`dim_date` built with `CALENDARAUTO()` instead of a static, hardcoded date table.**
+A hardcoded date table requires manual maintenance as the business's date range grows, and is a common source of stale-dimension bugs in production models. `CALENDARAUTO()` derives the date range directly from the model's existing fact tables, so the dimension expands automatically as new data is loaded.
+
+**Products matched on business key (product code), not on product name.**
+The source `products` table had no surrogate ID, only a business key. Joining on name seemed simpler but two rows shared a product name under different codes with inconsistent attribute completeness — joining `fact_sales` to `dim_product` on name caused row fan-out and silently inflated total sales. Switching the join key to the business key, after isolating and resolving the duplicate, removed the ambiguity.
+
+**Garbage source tables deleted outright; tables with content absorbed elsewhere deactivated instead.**
+`dim_order` (a single, unlinked ID column) had no salvageable information and was removed from the model entirely. `invoices`, `invoice_lines`, `payments`, and `shipments`, by contrast, had their reportable content already captured in `fact_order_process` — these were deactivated rather than deleted, preserving the option to re-enable a source table if a future requirement needs stage-level detail not carried into the accumulating snapshot.
+
+**Core measures collected in a disconnected `_Measures` table rather than built individually inside each fact table.**
+With multiple people building reports on top of the same model, measures scattered across fact tables invite duplicate, slightly different versions of the same calculation with no single source of truth. A disconnected table holding all core DAX measures gives report builders one place to find, reuse, and maintain them.
+
+
+
 ## Tools Used
 + Power BI Desktop
 + Excel (source data)
+
