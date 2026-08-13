@@ -43,10 +43,26 @@ Goal: identify grain, candidate role (dimension / fact / junk / support), and kn
 | 23 | `user_details` | 1 customer (despite "user" naming) | Merge into `dim_customer` | Naming inconsistency: `user_id` here vs. `customer_id` elsewhere — same entity |
 
 ## Data Model Architecture
+All relationships are one-to-many with single-direction filters flowing from dimension to fact. No fact-to-fact relationships exist; related facts share a conformed dimension (customer, product, or date) instead.
 ### Dimension Tables
-
+| Table | Role | Notes |
+|---|---|---|
+| `dim_customer` | Standard | Consolidated from 6 source tables |
+| `dim_product` | Standard | Deduplicated on business key (product code) |
+| `dim_campaign` | Standard | Static attributes only |
+| `dim_geo` | Role-playing | Connected to fact_sales twice (ship-to active, bill-to inactive via `USERELATIONSHIP`) |
+| `dim_date` | Shared/conformed | Built with `CALENDARAUTO()`, connects to nearly every fact |
+| junk dimension | Junk | order_channel, status, priority — extracted from `fact_sales` to avoid low-cardinality flag columns living in the fact |
 
 ### Fact Tables
+| Table | Grain | Type | Connects to |
+|---|---|---|---|
+| `fact_sales` | 1 order line | Transactional | dim_customer, dim_product, dim_date, dim_geo (ship/bill), junk dimension |
+| `fact_order_process` | 1 order | Accumulating snapshot | dim_customer, dim_date |
+| `fact_inventory` | 1 product, 1 month | Transactional | dim_product, dim_date |
+| `fact_campaign_spend` | 1 campaign, 1 day | Transactional | dim_campaign, dim_date |
+| `fact_promotion_coverage` | 1 campaign–product pair | Factless | dim_campaign, dim_product |
+| `fact_sales_targets` | 1 month | Standalone | dim_date |
 
 ## Tools Used
 + Power BI Desktop
