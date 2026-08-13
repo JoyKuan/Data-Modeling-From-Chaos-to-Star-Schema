@@ -1,9 +1,21 @@
 # Data-Modeling-From-Chaos-to-Star-Schema
 A Power BI data modeling project transforming a disorganized 17-table dataset into a governed star schema, covering dimension/fact design, data quality remediation, DAX measures, and row-level security.
 
+## Project Organization
+Power Query queries are organized into numbered groups, separating the raw source layer from the tables built on top of it as the model grows:
+
+| Group | Contents |
+|---|---|
+| `01_Stage` | Raw queries, staged exactly as received from source systems — no transformations applied.|
+| `02_Dimensions` | Descriptive, mostly static tables that provide context for analysis. |
+| `03_Facts` | Transactional/event tables — records of something that happened, holding measures and dates, connected to dimensions via foreign keys |
+| `04_Support` | Tables that are neither fact nor dimension (e.g. the security table) |
+| `Other Queries` | Newly connected tables/sources not yet triaged into a dimension, fact, or support role — working backlog |
+
 ## Data Source
 Initial exploration pass over all 23 raw tables — understanding *before* changing anything. 
 Goal: identify grain, candidate role (dimension / fact / junk / support), and known quality issues.
+
 | # | Table | Grain (1 row =) | Candidate role | Known issues |
 |---|---|---|---|---|
 | 1 | `Address` | 1 address | Merge into `dim_customer` | — |
