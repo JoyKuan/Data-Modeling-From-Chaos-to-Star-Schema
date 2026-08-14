@@ -64,7 +64,7 @@ All relationships are one-to-many with single-direction filters flowing from dim
 | `fact_sales_targets` | 1 month | Standalone | dim_date |
 
 ## Key Design Decisions
-- **RLS on `dim_customer`, not `dim_geo`** — filters two fact tables (`fact_sales`, `fact_order_process`) through one role instead of one fact through two dimensions.
+- **RLS on `dim_customer`, not `dim_geo`** — `dim_customer` connects to two facts (`fact_sales`, `fact_order_process`), so one role secures both; `dim_geo` only connects to `fact_sales`, so the same role would secure just one.
 - **`dim_geo` as a role-playing dimension** — one physical table serves both ship-to and bill-to via an active/inactive relationship pair, instead of duplicating the table.
 - **`fact_order_process` as an accumulating snapshot**, not four separate facts — cycle-time metrics become a single `DATEDIFF` instead of chained fact-to-fact joins.
 - **`fact_promotion_coverage` as a factless fact** — tracks campaign-product association with no numeric measure, since the business question is "was it covered," not "how much."
