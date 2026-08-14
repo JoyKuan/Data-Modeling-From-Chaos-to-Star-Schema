@@ -79,8 +79,7 @@ Source data had unresolved many-to-many relationships and no fixed filter direct
 - **`fact_promotion_coverage` as a factless fact** — tracks campaign-product association with no numeric measure, since the business question is "was it covered," not "how much."
 
 ## Business Questions This Data Supports
-
-Prepared for analysts to answer directly against the model — no additional joins or reconciliation required.
+Prepared for analysts to answer directly against the model.
 
 **Sales performance** (`fact_sales`, `dim_customer`, `dim_product`, `dim_date`)
 - Revenue, units, and average order value trends by period, product, or region
