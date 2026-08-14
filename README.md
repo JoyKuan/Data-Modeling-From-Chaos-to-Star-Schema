@@ -13,7 +13,7 @@ A Power BI data modeling project transforming a disorganized 23-table dataset in
 - Row-level security on regional access, verified against real user identities
 
 ## Power Query Organization
-Queries are organized into numbered groups, separating the raw source layer from the tables built on top of it as the model grows:
+Queries are organized into numbered groups to separate raw source data from the transformed tables built on top of it as the model grows:
 
 | Group | Contents |
 |---|---|
