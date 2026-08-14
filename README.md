@@ -78,7 +78,28 @@ Source data had unresolved many-to-many relationships and no fixed filter direct
 - **`fact_order_process` as an accumulating snapshot, not separate facts per stage** — avoids duplicating the same dollar amount across orders/shipments/invoices/payments, and supports process-flow questions (e.g. days from order to payment) directly.
 - **`fact_promotion_coverage` as a factless fact** — tracks campaign-product association with no numeric measure, since the business question is "was it covered," not "how much."
 
-## Business Questions
+## Business Questions This Data Supports
+
+Prepared for analysts to answer directly against the model — no additional joins or reconciliation required.
+
+**Sales performance** (`fact_sales`, `dim_customer`, `dim_product`, `dim_date`)
+- Revenue, units, and average order value trends by period, product, or region
+- Actual sales vs. target, by month (`fact_sales` joined to `fact_sales_targets` via `dim_date`)
+- Channel mix — which order channels are driving volume (`dim_order_flags`)
+
+**Order fulfillment** (`fact_order_process`)
+- Average and distribution of order-to-payment cycle time (`average_order_to_pay`)
+- Bottleneck stage in the fulfillment process — order, ship, deliver, or invoice
+
+**Inventory** (`fact_inventory`, `dim_product`)
+- Stock trend by product over time, and coverage against recent sales velocity (requires joining `fact_inventory` and `fact_sales` through `dim_product`)
+
+**Marketing** (`fact_campaign_spend`, `fact_promotion_coverage`, `dim_campaign`)
+- Spend efficiency by campaign and channel
+- Sales lift on products covered by a campaign vs. products not covered (requires joining `fact_promotion_coverage` and `fact_sales` through `dim_product`)
+
+**Security**
+- Regional access is enforced at the model level (RLS on `dim_customer`) — analysts don't need to filter by region manually
 
 
 ## Naming Conventions
