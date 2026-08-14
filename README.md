@@ -20,7 +20,7 @@ Queries are organized into numbered groups, separating the raw source layer from
 | `01_Stage` | Raw queries, staged exactly as received from source systems — no transformations applied|
 | `02_Dimensions` | Descriptive, mostly static tables that provide context for analysis |
 | `03_Facts` | Transactional/event tables — records of something that happened, holding measures and dates, connected to dimensions via foreign keys |
-| `04_Support` | Tables that are neither dim nor fact (e.g., security) |
+| `04_Support` | Tables that are neither dim nor fact (e.g. security) |
 | `Other Queries` | Newly connected tables/sources not yet triaged into a dimension, fact, or support role — working backlog |
 
 ## Data Source
