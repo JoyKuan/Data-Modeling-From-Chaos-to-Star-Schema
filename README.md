@@ -30,7 +30,7 @@ Initial exploration pass over all 23 raw tables in dataset.xlsx — understandin
 |---|---|---|---|---|
 | 1 | `Address` | 1 address | Merge into `dim_customer` | — |
 | 2 | `CAMPAIGN_LOG` | 1 campaign, 1 day | Split: `dim_campaign` + `fact_campaign_spend` | Mixes static attrs (name, budget) with daily transactions (spend, clicks, impressions) |
-| 3 | `campaign_skus` | 1 campaign | Source for `fact_campaign_sku` | Product list stored as delimited string in one cell; header row missing |
+| 3 | `campaign_skus` | 1 campaign | Source for `fact_campaign_sku` | Product list stored as delimited string in one cell;  Header row stored as data |
 | 4 | `cities` | 1 city | Merge into `dim_customer` | Header row stored as data (needs promote-headers) |
 | 5 | `CUST_MASTER` | 1 customer (company) | `dim_customer` core | Contains test row (CustomerID = 999) to filter out |
 | 6 | `customer_contacts` | 1 contact (many per customer) | Merge into `dim_customer` | Grain mismatch vs. customer — must filter to primary contact before merge or it fans out |
