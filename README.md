@@ -1,6 +1,9 @@
 # Data-Modeling-From-Chaos-to-Star-Schema
 A Power BI data modeling project transforming a disorganized 23-table dataset into a governed star schema, covering dimension/fact design, data quality remediation, DAX measures, and row-level security. The dataset simulates a B2B sales/marketing/fulfillment system and was intentionally structured to reproduce common production data issues.
 
+# Methodology
+![Project Methodology](project_methodology_phases.png)
+
 ## Result
 - 6 fact tables covering 4 modeling patterns: transactional, accumulating snapshot, factless, and standalone
 - 6 dimension tables, including a role-playing dimension (`dim_geo`) and a junk dimension (`dim_order_flags`)
@@ -77,6 +80,9 @@ Source data had unresolved many-to-many relationships and no fixed filter direct
 - **`dim_geo` as a role-playing dimension** — one physical table serves both ship-to and bill-to via an active/inactive relationship pair, instead of duplicating the table.
 - **`fact_order_process` as an accumulating snapshot, not separate facts per stage** — avoids duplicating the same dollar amount across orders/shipments/invoices/payments, and supports process-flow questions (e.g. days from order to payment) directly.
 - **`fact_promotion_coverage` as a factless fact** — tracks campaign-product association with no numeric measure, since the business question is "was it covered," not "how much."
+
+## Security & Validation
+
 
 ## Business Questions This Data Supports
 Prepared for analysts to answer directly against the model.
