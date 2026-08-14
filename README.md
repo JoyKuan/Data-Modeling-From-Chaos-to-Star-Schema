@@ -64,7 +64,7 @@ All relationships are one-to-many with single-direction filters flowing from dim
 | `fact_sales_targets` | 1 month | Standalone | dim_date |
 
 ## Key Design Decisions
-- **Entity naming resolved as "customer," not "user"** (`dim_customer` build) — source system used both terms for the same entity; standardized on the majority term rather than the first one encountered or maintaining two parallel entities.
+- **Entity naming resolved as "customer," not "user"** (`dim_customer` build) — same entity, two source-system names; standardized on the majority term instead of keeping both.
 - **RLS on `dim_customer`, not `dim_geo`** — `dim_customer` connects to two facts (`fact_sales`, `fact_order_process`), so one role secures both; `dim_geo` only connects to `fact_sales`, so the same role would secure just one.
 - **`dim_geo` as a role-playing dimension** — one physical table serves both ship-to and bill-to via an active/inactive relationship pair, instead of duplicating the table.
 - **`fact_order_process` as an accumulating snapshot, not separate facts per stage** — avoids duplicating the same dollar amount across orders/shipments/invoices/payments, and supports process-flow questions (e.g. days from order to payment) directly.
