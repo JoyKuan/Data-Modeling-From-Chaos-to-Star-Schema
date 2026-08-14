@@ -1,5 +1,6 @@
 # Data-Modeling-From-Chaos-to-Star-Schema
 A Power BI data modeling project transforming a disorganized 23-table dataset into a governed star schema, covering dimension/fact design, data quality remediation, DAX measures, and row-level security. The dataset simulates a B2B sales/marketing/fulfillment system and was intentionally structured to reproduce common production data issues.
+![Project Methodology](all_tables.png)
 
 ## Methodology
 ![Project Methodology](project_methodology_phases.png)
