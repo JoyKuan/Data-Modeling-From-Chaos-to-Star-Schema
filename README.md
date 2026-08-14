@@ -1,6 +1,12 @@
 # Data-Modeling-From-Chaos-to-Star-Schema
 A Power BI data modeling project transforming a disorganized 23-table dataset into a governed star schema, covering dimension/fact design, data quality remediation, DAX measures, and row-level security. The dataset simulates a B2B sales/marketing/fulfillment system and was intentionally structured to reproduce common production data issues.
 
+## Result
+- 6 fact tables covering 4 modeling patterns: transactional, accumulating snapshot, factless, and standalone
+- 6 dimension tables, including a role-playing dimension (`dim_geo`) and a junk dimension (`dim_order_flags`)
+- 0 fact-to-fact relationships — all cross-fact analysis routed through shared dimensions
+- Row-level security on regional access, verified against real user identities
+
 ## Power Query Organization
 Queries are organized into numbered groups, separating the raw source layer from the tables built on top of it as the model grows:
 
@@ -25,7 +31,7 @@ Goal: identify grain, candidate role (dimension / fact / junk / support), and kn
 | 5 | `CUST_MASTER` | 1 customer (company) | `dim_customer` core | Contains test row (CustomerID = 999) to filter out |
 | 6 | `customer_contacts` | 1 contact (many per customer) | Merge into `dim_customer` | Grain mismatch vs. customer — must filter to primary contact before merge or it fans out |
 | 7 | `dim_order` | unclear — single unlinked ID column | Junk, drop | No relatable context |
-| 8 | `exchange_rates` | 1 currency, 1 date | Support | Not yet applied to facts |
+| 8 | `exchange_rates` | 1 currency, 1 date | Support | Excluded — no relatable key to connect to the model |
 | 9 | `inventory` | 1 product (wide, 1 column per month) | `fact_inventory` | Wide format — needs unpivot |
 | 10 | `invoice_lines` | 1 invoice line | `fact_invoices` detail | — |
 | 11 | `INVOICES` | 1 invoice | `fact_invoices` header | — |
@@ -43,7 +49,8 @@ Goal: identify grain, candidate role (dimension / fact / junk / support), and kn
 | 23 | `user_details` | 1 customer (despite "user" naming) | Merge into `dim_customer` | Naming inconsistency: `user_id` here vs. `customer_id` elsewhere — same entity |
 
 ## Data Model Architecture
-All relationships are one-to-many with single-direction filters flowing from dimension to fact. No fact-to-fact relationships exist; related facts share a conformed dimension (customer, product, or date) instead.
+Source data had unresolved many-to-many relationships and no fixed filter direction, so the same metric could come back different depending on how you joined it. Star schema fixes that: every fact connects to its dimensions one way, dimension to fact, never fact to fact. Related facts share a dimension instead — customer, product, date.
+
 ### Dimension Tables
 | Table | Role | Notes |
 |---|---|---|
@@ -51,6 +58,7 @@ All relationships are one-to-many with single-direction filters flowing from dim
 | `dim_product` | Standard | Deduplicated on business key (product code) |
 | `dim_campaign` | Standard | Static attributes only |
 | `dim_geo` | Role-playing | Connected to fact_sales twice (ship-to active, bill-to inactive via `USERELATIONSHIP`) |
+| `dim_date` | Shared/conformed | Built with `CALENDARAUTO()`, connects to nearly every fact |
 | `dim_order_flags` | Junk | order_channel, status, priority — extracted from `fact_sales` to avoid low-cardinality flag columns living in the fact |
 
 ### Fact Tables
@@ -69,6 +77,19 @@ All relationships are one-to-many with single-direction filters flowing from dim
 - **`dim_geo` as a role-playing dimension** — one physical table serves both ship-to and bill-to via an active/inactive relationship pair, instead of duplicating the table.
 - **`fact_order_process` as an accumulating snapshot, not separate facts per stage** — avoids duplicating the same dollar amount across orders/shipments/invoices/payments, and supports process-flow questions (e.g. days from order to payment) directly.
 - **`fact_promotion_coverage` as a factless fact** — tracks campaign-product association with no numeric measure, since the business question is "was it covered," not "how much."
+
+## Business Questions
+
+
+## Naming Conventions
+
+| Category | Convention |
+|---|---|
+| Case | snake_case, all tables and columns |
+| Fact tables | `fact_` prefix |
+| Dimension tables | `dim_` prefix |
+| Surrogate keys | `_key` suffix (model-generated, e.g. `customer_key`) |
+| Natural keys | retained as sourced (e.g. `customer_id`) |
 
 ## Tools Used
 + Power BI Desktop
