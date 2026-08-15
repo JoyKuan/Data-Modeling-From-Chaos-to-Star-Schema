@@ -33,7 +33,7 @@ Initial exploration pass over all 23 raw tables in dataset.xlsx — understandin
 | 3 | `campaign_skus` | 1 campaign | Source for `fact_campaign_sku` | Product list stored as delimited string in one cell;  Header row stored as data |
 | 4 | `cities` | 1 city | Merge into `dim_customer` | Header row stored as data (needs promote-headers) |
 | 5 | `CUST_MASTER` | 1 customer (company) | `dim_customer` core | Contains test row (CustomerID = 999) to filter out |
-| 6 | `customer_contacts` | 1 contact (many per customer) | Merge into `dim_customer` | 1-to-many with CUST_MASTER — must filter to primary before merge |
+| 6 | `customer_contacts` | 1 contact (many per customer) | Merge into `dim_customer` | 1-to-many with dim_customer — must filter to primary before merge |
 | 7 | `dim_order` | unclear — single unlinked ID column | Junk, drop | No relatable context |
 | 8 | `exchange_rates` | 1 currency, 1 date | Support | Excluded — no relatable key to connect to the model |
 | 9 | `inventory` | 1 product (wide, 1 column per month) | `fact_inventory` | Wide format — needs unpivot |
