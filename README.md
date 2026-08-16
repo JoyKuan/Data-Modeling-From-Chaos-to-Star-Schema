@@ -52,7 +52,7 @@ Initial exploration pass over all 23 raw tables in dataset.xlsx — understandin
 | 22 | `subcategories` | 1 subcategory | Merge into `dim_product` | Combined category|subcategory column, needs split |
 | 23 | `user_details` | 1 customer (despite "user" naming) | Merge into `dim_customer` | Naming inconsistency: `user_id` here vs. `customer_id` elsewhere — same entity |
 
-### Intermediate Tables
+## Intermediate Tables
 Not part of the final model — staging tables used to build `dim_order_flags`.
 
 | Table | Built from | Purpose |
