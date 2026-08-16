@@ -52,6 +52,14 @@ Initial exploration pass over all 23 raw tables in dataset.xlsx — understandin
 | 22 | `subcategories` | 1 subcategory | Merge into `dim_product` | Combined category|subcategory column, needs split |
 | 23 | `user_details` | 1 customer (despite "user" naming) | Merge into `dim_customer` | Naming inconsistency: `user_id` here vs. `customer_id` elsewhere — same entity |
 
+### Intermediate Tables
+Not part of the final model — staging tables used to build `dim_order_flags`.
+
+| Table | Built from | Purpose |
+|---|---|---|
+| `orders` | `ORDERS_2025` and `ORDERS_2026`| Combines all records via UNION ALL (append), forming a single unified orders dataset |
+| `channels` | New lookup table | Maps `OrderChannel` code to its display name |
+
 ## Data Model Architecture
 Source data had unresolved many-to-many relationships and no fixed filter direction, so the same metric could come back different depending on how you joined it. Star schema fixes that: every fact connects to its dimensions one way, dimension to fact, never fact to fact. Related facts share a dimension instead — customer, product, date.
 
@@ -63,7 +71,7 @@ Source data had unresolved many-to-many relationships and no fixed filter direct
 | `dim_campaign` | Standard | Static attributes only |
 | `dim_geo` | Role-playing | Connected to fact_sales twice (ship-to active, bill-to inactive via `USERELATIONSHIP`) |
 | `dim_date` | Shared/conformed | Built with `CALENDARAUTO()`, connects to nearly every fact |
-| `dim_order_flags` | Junk | `OrderChannel`, `Status`, `Priority` — extracted from `orders`(`ORDERS_2025`+`ORDERS_2026`) to avoid low-cardinality flag columns living in the fact |
+| `dim_order_flags` | Junk | Combines `OrderChannel`, `Status`, `Priority` from orders; channel names mapped via channels |
 
 ### Fact Tables
 | Table | Grain | Type | Connects to |
