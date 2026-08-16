@@ -40,8 +40,8 @@ Initial exploration pass over all 23 raw tables in dataset.xlsx — understandin
 | 10 | `invoice_lines` | 1 invoice line | `fact_invoices` detail | — |
 | 11 | `INVOICES` | 1 invoice | `fact_invoices` header | — |
 | 12 | `order_line_items` | 1 order line | `fact_sales` detail | — |
-| 13 | `ORDERS_2025` | 1 order | `fact_sales` header source | Have `LegacyRef` an 'SourceFile' columns not present in 2026 |
-| 14 | `ORDERS_2026` | 1 order | `fact_sales` header source | Missing `LegacyRef` and 'SourceFile' vs. 2025 |
+| 13 | `ORDERS_2025` | 1 order | `fact_sales` header source | Have `LegacyRef` an `SourceFile` columns not present in 2026 |
+| 14 | `ORDERS_2026` | 1 order | `fact_sales` header source | Missing `LegacyRef` and `SourceFile` vs. 2025 |
 | 15 | `payments` | 1 payment | `fact_payments` | — |
 | 16 | `products` | 1 product | `dim_product` core | — |
 | 17 | `regions` | 1 region | Redundant — info already present via `cities` | Do not merge separately (duplicate context) |
