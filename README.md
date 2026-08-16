@@ -63,7 +63,7 @@ Source data had unresolved many-to-many relationships and no fixed filter direct
 | `dim_campaign` | Standard | Static attributes only |
 | `dim_geo` | Role-playing | Connected to fact_sales twice (ship-to active, bill-to inactive via `USERELATIONSHIP`) |
 | `dim_date` | Shared/conformed | Built with `CALENDARAUTO()`, connects to nearly every fact |
-| `dim_order_flags` | Junk | order_channel, status, priority — extracted from `fact_sales` to avoid low-cardinality flag columns living in the fact |
+| `dim_order_flags` | Junk | `OrderChannel`, `Status`, `Priority` — extracted from `orders`(`ORDERS_2025`+`ORDERS_2026`) to avoid low-cardinality flag columns living in the fact |
 
 ### Fact Tables
 | Table | Grain | Type | Connects to |
