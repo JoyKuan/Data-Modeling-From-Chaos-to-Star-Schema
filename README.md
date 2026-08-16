@@ -71,7 +71,7 @@ Source data had unresolved many-to-many relationships and no fixed filter direct
 | `dim_campaign` | Standard | Static attributes only |
 | `dim_geo` | Role-playing | Connected to fact_sales twice (ship-to active, bill-to inactive via `USERELATIONSHIP`) |
 | `dim_date` | Shared/conformed | Built with `CALENDARAUTO()`, connects to nearly every fact |
-| `dim_order_flags` | Junk | Combines `OrderChannel`, `Status`, `Priority` from `orders`; channel names mapped via channels |
+| `dim_order_flags` | Junk | Combines `OrderChannel`, `Status`, `Priority` from **orders**; channel names mapped via **channels** |
 
 ### Fact Tables
 | Table | Grain | Type | Connects to |
