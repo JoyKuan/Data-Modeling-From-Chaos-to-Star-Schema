@@ -57,7 +57,7 @@ Not part of the final model — staging tables used to build `dim_order_flags`.
 
 | Table | Built from | Purpose |
 |---|---|---|
-| **orders** | `ORDERS_2025` and `ORDERS_2026` | Combines all records via UNION ALL (append), forming a single unified orders dataset |
+| **orders** | **ORDERS_2025** and **ORDERS_2026** | Combines all records via UNION ALL (append), forming a single unified orders dataset |
 | **channels** | New lookup table | Maps `OrderChannel` code to its display name |
 
 ## Data Model Architecture
