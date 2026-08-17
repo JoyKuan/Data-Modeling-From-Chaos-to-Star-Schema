@@ -68,17 +68,18 @@ Source data had unresolved many-to-many relationships and no fixed filter direct
 |---|---|---|
 | `dim_customer` | Standard | Consolidated from 6 source tables |
 | `dim_product` | Standard | Deduplicated on business key (product code) |
-| `dim_campaign` | Standard | Static attributes only |
 | `dim_geo` | Role-playing | Connected to fact_sales twice (ship-to active, bill-to inactive via `USERELATIONSHIP`) |
-| `dim_date` | Shared/conformed | Built with `CALENDARAUTO()`, connects to nearly every fact |
 | `dim_order_flags` | Junk | Combines `OrderChannel`, `Status`, `Priority` from **orders**; channel names mapped via **channels** |
+| `dim_campaign` | Standard | Static attributes only |
+| `dim_date` | Shared/conformed | Built with `CALENDARAUTO()`, connects to nearly every fact |
+
 
 ### Fact Tables
 | Table | Grain | Type | Connects to |
 |---|---|---|---|
-| `fact_sales` | 1 order line | Transactional | dim_customer, dim_product, dim_date, dim_geo (ship/bill), dim_order_flags |
+| `fact_sales` | 1 order line | Transactional | dim_customer, dim_product, dim_geo (ship/bill), dim_order_flags |
+| `fact_inventory` | 1 product, 1 month | Transactional | dim_product |
 | `fact_order_process` | 1 order | Accumulating snapshot | dim_customer, dim_date |
-| `fact_inventory` | 1 product, 1 month | Transactional | dim_product, dim_date |
 | `fact_campaign_spend` | 1 campaign, 1 day | Transactional | dim_campaign, dim_date |
 | `fact_promotion_coverage` | 1 campaign–product pair | Factless | dim_campaign, dim_product |
 | `fact_sales_targets` | 1 month | Standalone | dim_date |
