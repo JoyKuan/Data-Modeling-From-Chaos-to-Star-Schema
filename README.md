@@ -48,7 +48,7 @@ Initial exploration pass over all 23 raw tables in dataset.xlsx — understandin
 | 18 | **sales_targets** | 1 month | Support / comparison fact (target vs. actual) | Missing 2025-01 and 2025-08 |
 | 19 | **security** | 1 employee | Support (RLS) | Header row stored as data |
 | 20 | **sheet1** | 1 shipment | Duplicate of `shipments` | Identical to `shipments` — import artifact, drop |
-| 21 | **shipments** | 1 shipment | `fact_shipments` | — |
+| 21 | **shipments** | 1 shipment |  | — |
 | 22 | **subcategories** | 1 subcategory | Merge into `dim_product` | Combined category|subcategory column, needs split |
 | 23 | **user_details** | 1 customer (despite "user" naming) | Merge into `dim_customer` | Naming inconsistency: `user_id` here vs. `customer_id` elsewhere — same entity |
 
