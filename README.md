@@ -37,8 +37,8 @@ Initial exploration pass over all 23 raw tables in dataset.xlsx — understandin
 | 7 | **dim_order** | unclear — single unlinked ID column | Junk, drop | No relatable context |
 | 8 | **exchange_rates** | 1 currency, 1 date | Support | Excluded — no relatable key to connect to the model |
 | 9 | **inventory** | 1 product (wide, 1 column per month) | `fact_inventory` | Wide format — needs unpivot |
-| 10 | **invoice_lines** | 1 invoice line | `fact_invoices` detail | — |
-| 11 | **INVOICES** | 1 invoice | `fact_invoices` header | — |
+| 10 | **invoice_lines** | 1 invoice line | invoice detail | — |
+| 11 | **INVOICES** | 1 invoice | invoices header | — |
 | 12 | **order_line_items** | 1 order line | `fact_sales` detail | — |
 | 13 | **ORDERS_2025** | 1 order | `fact_sales` header source | Have `LegacyRef` an `SourceFile` columns not present in 2026 |
 | 14 | **ORDERS_2026** | 1 order | `fact_sales` header source | Missing `LegacyRef` and `SourceFile` vs. 2025 |
