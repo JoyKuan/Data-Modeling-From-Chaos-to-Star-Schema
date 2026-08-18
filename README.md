@@ -29,10 +29,10 @@ Initial exploration pass over all 23 raw tables in dataset.xlsx — understandin
 | # | Table | Grain (1 row =) | Candidate role | Known issues |
 |---|---|---|---|---|
 | 01 | **CUST_MASTER** | 1 customer (company) | `dim_customer` core | Contains test row (CustomerID = 999) to filter out |
-| 02 | **customer_contacts** | 1 contact (many per customer) | Merge into `dim_customer` | 1-to-many with dim_customer — must filter to primary before merge |
+| 02 | **customer_contacts** | 1 contact (many per customer) | Merge into `dim_customer` | 1-to-many with `dim_customer` — must filter to primary before merge |
 | 03 | **Address** | 1 address | Merge into `dim_customer` | — |
 | 04 | **cities** | 1 city | Merge into `dim_customer` | Header row stored as data (needs promote-headers) |
-| 05 | **regions** | 1 region | Redundant — info already present via `cities` | Do not merge separately (duplicate context) |
+| 05 | **regions** | 1 region | Redundant — info already present via **cities** | Do not merge separately (duplicate context) |
 | 06 | **user_details** | 1 customer (despite "user" naming) | Merge into `dim_customer` | Naming inconsistency: `user_id` here vs. `customer_id` elsewhere — same entity |
 | 07 | **products** | 1 product | `dim_product` core | — |
 | 08 | **subcategories** | 1 subcategory | Merge into `dim_product` | Combined category|subcategory column, needs split |
