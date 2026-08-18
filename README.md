@@ -59,6 +59,7 @@ Not part of the final model — staging tables used to build `dim_order_flags`.
 |---|---|---|
 | **orders** | **ORDERS_2025** and **ORDERS_2026** | Combines all records via UNION ALL (append), forming a single unified orders dataset |
 | **channels** | New lookup table | Maps `OrderChannel` code to its display name |
+| **shipments_agg** | shipments | Pre-aggregates **shipments** to order-level grain prior to merge into `fact_order_process` |
 
 ## Data Model Architecture
 Source data had unresolved many-to-many relationships and no fixed filter direction, so the same metric could come back different depending on how you joined it. Star schema fixes that: every fact connects to its dimensions one way, dimension to fact, never fact to fact. Related facts share a dimension instead — customer, product, date.
