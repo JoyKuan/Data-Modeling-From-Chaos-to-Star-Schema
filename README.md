@@ -28,29 +28,29 @@ Initial exploration pass over all 23 raw tables in dataset.xlsx — understandin
 
 | # | Table | Grain (1 row =) | Candidate role | Known issues |
 |---|---|---|---|---|
-| 1 | **Address** | 1 address | Merge into `dim_customer` | — |
-| 2 | **CAMPAIGN_LOG** | 1 campaign, 1 day | Split: `dim_campaign` + `fact_campaign_spend` | Mixes static attrs (name, budget) with daily transactions (spend, clicks, impressions) |
-| 3 | **campaign_skus** | 1 campaign | Source for `fact_campaign_sku` | Product list stored as delimited string in one cell;  Header row stored as data |
-| 4 | **cities** | 1 city | Merge into `dim_customer` | Header row stored as data (needs promote-headers) |
-| 5 | **CUST_MASTER** | 1 customer (company) | `dim_customer` core | Contains test row (CustomerID = 999) to filter out |
-| 6 | **customer_contacts** | 1 contact (many per customer) | Merge into `dim_customer` | 1-to-many with dim_customer — must filter to primary before merge |
-| 7 | **dim_order** | unclear — single unlinked ID column | Junk, drop | No relatable context |
-| 8 | **exchange_rates** | 1 currency, 1 date | Support | Excluded — no relatable key to connect to the model |
-| 9 | **inventory** | 1 product (wide, 1 column per month) | `fact_inventory` | Wide format — needs unpivot |
-| 10 | **invoice_lines** | 1 invoice line | invoice detail | — |
-| 11 | **INVOICES** | 1 invoice | invoices header | — |
-| 12 | **order_line_items** | 1 order line | `fact_sales` detail | — |
-| 13 | **ORDERS_2025** | 1 order | `fact_sales` header source | Have `LegacyRef` an `SourceFile` columns not present in 2026 |
-| 14 | **ORDERS_2026** | 1 order | `fact_sales` header source | Missing `LegacyRef` and `SourceFile` vs. 2025 |
-| 15 | **payments** | 1 payment | `fact_payments` | — |
-| 16 | **products** | 1 product | `dim_product` core | — |
-| 17 | **regions** | 1 region | Redundant — info already present via `cities` | Do not merge separately (duplicate context) |
-| 18 | **sales_targets** | 1 month | Support / comparison fact (target vs. actual) | Missing 2025-01 and 2025-08 |
-| 19 | **security** | 1 employee | Support (RLS) | Header row stored as data |
-| 20 | **sheet1** | 1 shipment | Duplicate of `shipments` | Identical to `shipments` — import artifact, drop |
-| 21 | **shipments** | 1 shipment |  | — |
-| 22 | **subcategories** | 1 subcategory | Merge into `dim_product` | Combined category|subcategory column, needs split |
-| 23 | **user_details** | 1 customer (despite "user" naming) | Merge into `dim_customer` | Naming inconsistency: `user_id` here vs. `customer_id` elsewhere — same entity |
+| 01 | **CUST_MASTER** | 1 customer (company) | `dim_customer` core | Contains test row (CustomerID = 999) to filter out |
+| 02 | **customer_contacts** | 1 contact (many per customer) | Merge into `dim_customer` | 1-to-many with dim_customer — must filter to primary before merge |
+| 03 | **Address** | 1 address | Merge into `dim_customer` | — |
+| 04 | **cities** | 1 city | Merge into `dim_customer` | Header row stored as data (needs promote-headers) |
+| 05 | **regions** | 1 region | Redundant — info already present via `cities` | Do not merge separately (duplicate context) |
+| 06 | **user_details** | 1 customer (despite "user" naming) | Merge into `dim_customer` | Naming inconsistency: `user_id` here vs. `customer_id` elsewhere — same entity |
+| 07 | **products** | 1 product | `dim_product` core | — |
+| 08 | **subcategories** | 1 subcategory | Merge into `dim_product` | Combined category|subcategory column, needs split |
+| 09 | **ORDERS_2025** | 1 order | `fact_sales` header source | Have `LegacyRef` an `SourceFile` columns not present in 2026 |
+| 10 | **ORDERS_2026** | 1 order | `fact_sales` header source | Missing `LegacyRef` and `SourceFile` vs. 2025 |
+| 11 | **order_line_items** | 1 order line | `fact_sales` detail | — |
+| 12 | **inventory** | 1 product (wide, 1 column per month) | `fact_inventory` | Wide format — needs unpivot |
+| 13 | **CAMPAIGN_LOG** | 1 campaign, 1 day | Split: `dim_campaign` + `fact_campaign_spend` | Mixes static attrs (CampaignName, Channel, StartDate, EndDate, Budget) with daily transactions (Spend, Clicks, Impressions) |
+| 14 | **campaign_skus** | 1 campaign | Source for `fact_promotion_coverage` | Product list stored as delimited string in one cell;  Header row stored as data |
+| 15 | **INVOICES** | 1 invoice | invoices header | — |
+| 16 | **invoice_lines** | 1 invoice line | invoice detail | — |
+| 17 | **shipments** | 1 shipment | Date source for `fact_order_process` (shipment_date, delivery_date) | Multiple shipments per order (partial shipments) — needs Group By before merge to avoid fan-out |
+| 18 | **payments** | 1 payment | Date source for `fact_order_process` (payment_date) | Some invoices have multiple payments whose sum can exceed the invoice amount — needs validation |
+| 19 | **sales_targets** | 1 month | Source for `fact_sales_targets` | Missing 2025-01 and 2025-08 |
+| 20 | **exchange_rates** | 1 currency, 1 date | Support?? | Inactivate — no relatable key to connect to the model |
+| 21 | **security** | 1 employee | Support (RLS) | Header row stored as data |
+| 22 | **sheet1** | 1 shipment | Duplicate of `shipments` | Identical to `shipments` — import artifact, remove |
+| 23 | **dim_order** | unclear — single unlinked ID column | Junk, drop | No relatable context, remove |
 
 ## Intermediate Tables
 Not part of the final model — staging tables used to build `dim_order_flags`.
