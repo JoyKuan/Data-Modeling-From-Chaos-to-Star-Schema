@@ -111,7 +111,7 @@ Notes:
 Beyond the five core measures, the fact tables support ad-hoc analysis that doesn't need a pre-built measure:
 
 - **Sales**: trends by period/product/region, actual vs. target (`fact_sales` + `fact_sales_targets` via `dim_date`), channel mix
-- **Fulfillment**: bottleneck stage across order → ship → deliver → invoice
+- **Fulfillment**: bottleneck stage across order → ship → deliver → invoice → pay
 - **Inventory**: stock trend vs. sales velocity (`fact_inventory` + `fact_sales` via `dim_product`)
 - **Marketing**: spend efficiency, sales lift on campaign-covered products (`fact_promotion_coverage` + `fact_sales` via `dim_product`)
 
