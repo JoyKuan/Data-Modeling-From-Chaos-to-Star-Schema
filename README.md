@@ -105,7 +105,7 @@ All core metrics live in one `_measures` table. This is the single source of tru
 Notes:
 - `Total Orders` uses `DISTINCTCOUNT`, not `COUNT` — `fact_sales` is grained at the order line, so a plain count would overcount orders.
 - `Total Active Customers` and `Total Customers` are paired deliberately, to surface the gap between the full customer base and customers who actually transacted.
-- `Average Order to Pay` runs on a row-level `DATEDIFF(order_date, pay_date, DAY)` computed on the accumulating snapshot fact.
+- `Average Order to Pay` runs on a row-level `DATEDIFF(order_date, pay_date, DAY)` computed on the accumulating snapshot fact (`fact_order_process`).
 
 ## Security & Test
 
