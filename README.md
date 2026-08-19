@@ -104,34 +104,18 @@ All core metrics live in one `_measures` table. This is the single source of tru
 
 Notes:
 - `Total Orders` uses `DISTINCTCOUNT`, not `COUNT` — `fact_sales` is grained at the order line, so a plain count would overcount orders.
-- `Total Active Customers` and `Total Customers` are paired deliberately, to surface the gap between the full customer base and customers who actually transacted.
+- `Total Active Customers` and `Total Customers` are paired on purpose so you can see how many customers are actually ordering vs. the full customer base.
 - `Average Order to Pay` runs on a row-level `DATEDIFF(order_date, pay_date, DAY)` computed on the accumulating snapshot fact (`fact_order_process`).
 
-## Security & Test
+## What This Model Enables
+Beyond the five core measures, the fact tables support ad-hoc analysis that doesn't need a pre-built measure:
 
+- **Sales**: trends by period/product/region, actual vs. target (`fact_sales` + `fact_sales_targets` via `dim_date`), channel mix
+- **Fulfillment**: bottleneck stage across order → ship → deliver → invoice
+- **Inventory**: stock trend vs. sales velocity (`fact_inventory` + `fact_sales` via `dim_product`)
+- **Marketing**: spend efficiency, sales lift on campaign-covered products (`fact_promotion_coverage` + `fact_sales` via `dim_product`)
 
-## Business Questions This Data Supports
-Prepared for analysts to answer directly against the model.
-
-**Sales performance** (`fact_sales`, `dim_customer`, `dim_product`, `dim_date`)
-- Revenue, units, and average order value trends by period, product, or region
-- Actual sales vs. target, by month (`fact_sales` joined to `fact_sales_targets` via `dim_date`)
-- Channel mix — which order channels are driving volume (`dim_order_flags`)
-
-**Order fulfillment** (`fact_order_process`)
-- Average and distribution of order-to-payment cycle time (`average_order_to_pay`)
-- Bottleneck stage in the fulfillment process — order, ship, deliver, or invoice
-
-**Inventory** (`fact_inventory`, `dim_product`)
-- Stock trend by product over time, and coverage against recent sales velocity (requires joining `fact_inventory` and `fact_sales` through `dim_product`)
-
-**Marketing** (`fact_campaign_spend`, `fact_promotion_coverage`, `dim_campaign`)
-- Spend efficiency by campaign and channel
-- Sales lift on products covered by a campaign vs. products not covered (requires joining `fact_promotion_coverage` and `fact_sales` through `dim_product`)
-
-**Security**
-- Regional access is enforced at the model level (RLS on `dim_customer`) — analysts don't need to filter by region manually
-
+Regional access is enforced at the model level (RLS on `dim_customer`), so this doesn't need to be filtered manually in any of the above.
 
 ## Naming Conventions
 
