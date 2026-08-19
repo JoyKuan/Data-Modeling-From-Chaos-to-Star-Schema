@@ -50,7 +50,7 @@ Initial exploration pass over all 23 raw tables in dataset.xlsx — understandin
 | 17 | **shipments** | 1 shipment | Date source for `fact_order_process` (shipment_date, delivery_date) | Multiple shipments per order (partial shipments) — needs Group By before merge to avoid fan-out |
 | 18 | **payments** | 1 payment | Date source for `fact_order_process` (payment_date) | Some invoices have multiple payments whose sum can exceed the invoice amount — needs validation |
 | 19 | **sales_targets** | 1 month | Source for `fact_sales_targets` | Missing 2025-01 and 2025-08 |
-| 20 | **exchange_rates** | 1 currency, 1 date | Excluded / deactivated | No relatable key to connect to the model; kept in case a future use case needs it |
+| 20 | **exchange_rates** | 1 currency, 1 date | Deactivated | No relatable key to connect to the model; kept in case a future use case needs it |
 | 21 | **security** | 1 employee | Support (RLS) | Header row stored as data |
 | 22 | **sheet1** | 1 shipment | Duplicate of `shipments` | Identical to `shipments` — import artifact, remove |
 | 23 | **dim_order** | unclear — single unlinked ID column | Junk, drop | No relatable context, remove |
