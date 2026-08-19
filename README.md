@@ -11,7 +11,7 @@ A Power BI data modeling project transforming a disorganized 23 tables into a go
 
 ## Result
 - 6 fact tables covering 4 modeling patterns: transactional, accumulating snapshot, factless, and standalone
-- 6 dimension tables, including a role-playing dimension (`dim_geo`) and a junk dimension (`dim_order_flags`)
+- 6 dimension tables, including a role-playing dimension (`dim_geo`), a junk dimension (`dim_order_flags`) and a DAX-generated calendar table (dim_date)
 - 0 fact-to-fact relationships — all cross-fact analysis routed through shared dimensions
 - Row-level security on regional access, verified against real user identities
 
