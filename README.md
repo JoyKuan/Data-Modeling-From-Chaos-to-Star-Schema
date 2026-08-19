@@ -122,7 +122,7 @@ Notes:
 - `Average Order to Pay` runs on a row-level `DATEDIFF(order_date, pay_date, DAY)` computed on the accumulating snapshot fact (`fact_order_process`).
 
 ## What This Model Enables
-Beyond the five core measures, the fact tables support ad-hoc analysis that doesn't need a pre-built measure:
+Beyond the five core measures, the fact tables support ad-hoc analysis that does not need a pre-built measure:
 
 - **Sales**: trends by period/product/region, actual vs. target (`fact_sales` + `fact_sales_targets` via `dim_date`), channel mix
 - **Fulfillment**: bottleneck stage across order → ship → deliver → invoice → pay
