@@ -1,10 +1,16 @@
 # Data-Modeling-From-Chaos-to-Star-Schema
 A Power BI data modeling project transforming a disorganized 23 tables into a governed star schema, covering dimension/fact design, data quality remediation, DAX measures, and row-level security. The dataset simulates a B2B sales/marketing/fulfillment system and was intentionally structured to reproduce common production data issues.
 
-## Before → After
-| Before | After |
+## Source Tables → Final Data Model
+| Source Tables | Final Data Model |
 |---|---|
 | ![Before](all_tables.jpg) | ![After](final_model.jpg) |
+
+#### The Problem: Unstructured Source Tables
+- **Over-fragmented architecture** — 23 tables with no grouping by roleor domain.
+- **Tangled relational paths** — Tables connect directly to each other; one pair has three relationships at once.
+- **Scattered business entities** — Customer data split across six tables; orders split into two by year.
+- **Data quality risks** — Placeholder column names, and several tables disconnected from the rest of the model.
 
 ## Methodology
 ![Project Methodology](project_methodology_phases.png)
@@ -65,7 +71,12 @@ Not part of the final model — staging tables used to build `dim_order_flags`.
 | **shipments_agg** | shipments | Pre-aggregates **shipments** to order-level grain prior to merge into `fact_order_process` |
 
 ## Data Model Architecture
-Source data had unresolved many-to-many relationships and no fixed filter direction, so the same metric could come back different depending on how you joined it. Star schema fixes that: every fact connects to its dimensions one way, dimension to fact, never fact to fact. Related facts share a dimension instead — customer, product, date.
+The model follows a star schema design (a galaxy schema, given multiple fact tables) with these characteristics:
+
+* Multiple fact tables, each with its own grain
+* Denormalized dimension tables
+* One relationship per fact–dimension pair, except deliberate role-playing dimensions
+* No direct relationships between fact tables — shared dimensions connect them instead
 
 ### Dimension Tables
 | Table | Role | Notes |
