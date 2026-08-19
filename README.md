@@ -91,8 +91,21 @@ Source data had unresolved many-to-many relationships and no fixed filter direct
 - **`fact_order_process` as an accumulating snapshot, not separate facts per stage** — avoids duplicating the same dollar amount across orders/shipments/invoices/payments, and supports process-flow questions (e.g. days from order to payment) directly.
 - **`fact_promotion_coverage` as a factless fact** — tracks campaign-product association with no numeric measure, since the business question is "was it covered," not "how much."
 
-## The Measures
+## Measures
+All core metrics live in one `_measures` table. This is the single source of truth — every report pulls the same number for the same metric, instead of each dashboard defining it independently.
 
+| Measure | DAX |
+|---|---|
+| `Total Sales` | `SUM(fact_sales[line_total])` |
+| `Total Orders` | `DISTINCTCOUNT(fact_sales[order_id])` |
+| `Total Active Customers` | `DISTINCTCOUNT(fact_sales[customer_id])` |
+| `Total Customers` | `COUNT(dim_customer[customer_id])` |
+| `Average Order to Pay` | `AVERAGE(fact_order_process[order_to_pay])` |
+
+Notes:
+- `Total Orders` uses `DISTINCTCOUNT`, not `COUNT` — `fact_sales` is grained at the order line, so a plain count would overcount orders.
+- `Total Active Customers` and `Total Customers` are paired deliberately, to surface the gap between the full customer base and customers who actually transacted.
+- `Average Order to Pay` runs on a row-level `DATEDIFF(order_date, pay_date, DAY)` computed on the accumulating snapshot fact.
 
 ## Security & Test
 
