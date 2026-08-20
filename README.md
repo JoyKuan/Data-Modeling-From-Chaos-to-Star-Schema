@@ -32,7 +32,7 @@ Queries are organized into numbered groups to separate raw source data from the 
 | `04_Support` | Tables that are neither dim nor fact (e.g. security) |
 | `Other Queries` | Newly connected tables/sources not yet triaged into a dimension, fact, or support role — working backlog |
 
-## Phase 1 — Prepare & Explore
+## Phase 1 — Explore & Profile
 ### Data Source
 Initial exploration pass over all 23 raw tables in dataset.xlsx — understanding *before* changing anything. The goal is to identify grain, candidate role (dimension / fact / junk / support), and known quality issues.
 
@@ -71,7 +71,7 @@ Not part of the final model — staging tables used to build `dim_order_flags`.
 | **channels** | New lookup table | Maps `OrderChannel` code to its display name |
 | **shipments_agg** | shipments | Pre-aggregates **shipments** to order-level grain prior to merge into `fact_order_process` |
 
-## Phase 2 & 3 — Build Dimensions & Facts
+## Phase 2 — Build Dimensions & Facts
 ### Data Model Architecture
 The model follows a star schema design (a galaxy schema, given multiple fact tables) with these characteristics:
 
@@ -107,7 +107,7 @@ The model follows a star schema design (a galaxy schema, given multiple fact tab
 - **`fact_order_process` as an accumulating snapshot, not separate facts per stage** — avoids duplicating the same dollar amount across orders/shipments/invoices/payments, and supports process-flow questions (e.g. days from order to payment) directly.
 - **`fact_promotion_coverage` as a factless fact** — tracks campaign-product association with no numeric measure, since the business question is "was it covered," not "how much."
 
-## Phase 4 — Polish
+## Phase 3 — Semantic Layer
 ### Measures
 All core metrics live in one `_measures` table. This is the single source of truth — every report pulls the same number for the same metric, instead of each dashboard defining it independently.
 
@@ -132,7 +132,7 @@ Beyond the five core measures, the fact tables support ad-hoc analysis that does
 - **Inventory**: stock trend vs. sales velocity (`fact_inventory` + `fact_sales` via `dim_product`)
 - **Marketing**: spend efficiency, sales lift on campaign-covered products (`fact_promotion_coverage` + `fact_sales` via `dim_product`)
 
-### Security & Validation
+## Phase 4 — Govern & Validate
 
 **Row-level security** — implemented on `dim_customer`, filtering by region:
 
@@ -161,4 +161,4 @@ Verified using Power BI's *View As* feature against real user identities. With n
 + Power BI Desktop
 + Excel (source data)
 
-Learning project based on [Data with Baraa's Power BI Data Modeling Portfolio Project End-to-End (Nightmare Data Model)](https://www.youtube.com/watch?v=0A2k62YEbfI).
+*Inspired by [Data with Baraa's Power BI Data Modeling Portfolio Project End-to-End (Nightmare Data Model)](https://www.youtube.com/watch?v=0A2k62YEbfI).
