@@ -129,6 +129,19 @@ Beyond the five core measures, the fact tables support ad-hoc analysis that does
 - **Inventory**: stock trend vs. sales velocity (`fact_inventory` + `fact_sales` via `dim_product`)
 - **Marketing**: spend efficiency, sales lift on campaign-covered products (`fact_promotion_coverage` + `fact_sales` via `dim_product`)
 
+## Security & Validation
+
+**Row-level security** — implemented on `dim_customer`, filtering by region:
+
+```dax
+[region] = LOOKUPVALUE(security[region], security[user_email], USERPRINCIPALNAME())
+```
+Verified using Power BI's *View As* feature against real user identities. With no role applied, the model reflects all regions; viewed as a specific region, both `dim_customer`-connected facts (`fact_sales`,`fact_order_process`) filter down to that region only.
+
+| No role applied | Viewed as North America |
+|---|---|
+| ![All regions](without_rls.jpg) | ![Filtered to NA](docs/rls_na.jpg) |
+
 Regional access is enforced at the model level (RLS on `dim_customer`), so this doesn't need to be filtered manually in any of the above.
 
 ## Naming Conventions
