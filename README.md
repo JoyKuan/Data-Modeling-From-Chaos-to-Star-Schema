@@ -35,7 +35,7 @@ Queries are organized into numbered groups to separate raw source data from the 
 ## Data Source
 Initial exploration pass over all 23 raw tables in dataset.xlsx — understanding *before* changing anything. The goal is to identify grain, candidate role (dimension / fact / junk / support), and known quality issues.
 
-| # | Table | Grain (1 row =) | Candidate role | Known issues |
+| No. | Table | Grain (1 row =) | Candidate role | Known issues |
 |---|---|---|---|---|
 | 01 | **CUST_MASTER** | 1 customer (company) | `dim_customer` core | Contains test row (CustomerID = 999) to filter out |
 | 02 | **customer_contacts** | 1 contact (many per customer) | Merge into `dim_customer` | 1-to-many with `dim_customer` — must filter to primary before merge |
