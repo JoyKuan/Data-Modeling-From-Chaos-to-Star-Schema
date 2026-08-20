@@ -158,3 +158,4 @@ Verified using Power BI's *View As* feature against real user identities. With n
 + Power BI Desktop
 + Excel (source data)
 
+Learning project based on [Data with Baraa's Power BI Data Modeling Portfolio Project End-to-End (Nightmare Data Model)](https://www.youtube.com/watch?v=0A2k62YEbfI).
