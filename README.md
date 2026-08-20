@@ -32,7 +32,7 @@ Queries are organized into numbered groups to separate raw source data from the 
 | `04_Support` | Tables that are neither dim nor fact (e.g. security) |
 | `Other Queries` | Newly connected tables/sources not yet triaged into a dimension, fact, or support role — working backlog |
 
-## Phase 1 — Prepare
+## Phase 1 — Prepare & Explore
 ### Data Source
 Initial exploration pass over all 23 raw tables in dataset.xlsx — understanding *before* changing anything. The goal is to identify grain, candidate role (dimension / fact / junk / support), and known quality issues.
 
