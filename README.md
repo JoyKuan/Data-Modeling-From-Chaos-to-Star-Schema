@@ -4,7 +4,7 @@ A Power BI data modeling project transforming a disorganized 23 tables into a go
 ## Source Tables → Final Data Model
 | Source Tables | Final Data Model |
 |---|---|
-| ![Before](all_tables.jpg) | ![After](final_model.jpg) |
+| ![Before](docs/all_tables.jpg) | ![After](docs/final_model.jpg) |
 
 #### The Problem: Unstructured Source Tables
 - **Over-fragmented architecture** — 23 tables with no grouping by roleor domain.
@@ -140,7 +140,7 @@ Verified using Power BI's *View As* feature against real user identities. With n
 
 | No role applied | Viewed as North America |
 |---|---|
-| ![All regions](without_rls.jpg) | ![Filtered to NA](docs/rls_na.jpg) |
+| ![All regions](docs/without_rls.jpg) | ![Filtered to NA](docs/rls_na.jpg) |
 
 Regional access is enforced at the model level (RLS on `dim_customer`), so this doesn't need to be filtered manually in any of the above.
 
