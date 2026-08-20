@@ -13,7 +13,7 @@ A Power BI data modeling project transforming a disorganized 23 tables into a go
 - **Data quality risks** — Placeholder column names, and several tables disconnected from the rest of the model.
 
 ## Methodology
-![Project Methodology](docs/project_methodology_phases.png)
+![Project Methodology](docs/project_methodology.png)
 
 ## Result
 - 6 fact tables covering 4 modeling patterns: transactional, accumulating snapshot, factless, and standalone
