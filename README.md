@@ -149,7 +149,7 @@ Verified using Power BI's *View As* feature against real user identities. With n
 
 **Data lineage** — published to Power BI Service, where the Lineage view traces the dependency chain from source tables through to the report, and other users can reuse this model via Live Connection instead of rebuilding it from scratch.
 
-![Lineage view](docs/lineage_view.jpg)
+![Lineage view](docs/lineage_view.png)
 
 ## Naming Conventions
 
