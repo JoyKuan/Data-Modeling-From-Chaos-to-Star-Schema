@@ -136,13 +136,13 @@ Beyond the five core measures, the fact tables support ad-hoc analysis that does
 ```dax
 [region] = LOOKUPVALUE(security[region], security[user_email], USERPRINCIPALNAME())
 ```
-Verified using Power BI's *View As* feature against real user identities. With no role applied, the model reflects all regions; viewed as a specific region, both `dim_customer`-connected facts (`fact_sales`,`fact_order_process`) filter down to that region only.
+If a user has no matching row in the security table, LOOKUPVALUE returns blank and the role filter resolves to no rows — such a user sees an empty model rather than an error, so every viewer needs an entry in security before being granted access.
+
+Verified using Power BI's *View As* feature against real user identities. With no role applied, the model reflects all regions; viewed as a specific region, both `dim_customer`- connected facts (`fact_sales`,`fact_order_process`) filter down to that region only.
 
 | No role applied | Viewed as North America |
 |---|---|
 | ![All regions](docs/without_rls.jpg) | ![Filtered to NA](docs/rls_na.jpg) |
-
-Regional access is enforced at the model level (RLS on `dim_customer`), so this doesn't need to be filtered manually in any of the above.
 
 ## Naming Conventions
 
