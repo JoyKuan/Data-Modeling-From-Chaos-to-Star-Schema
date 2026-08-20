@@ -132,7 +132,7 @@ Beyond the five core measures, the fact tables support ad-hoc analysis that does
 - **Inventory**: stock trend vs. sales velocity (`fact_inventory` + `fact_sales` via `dim_product`)
 - **Marketing**: spend efficiency, sales lift on campaign-covered products (`fact_promotion_coverage` + `fact_sales` via `dim_product`)
 
-## Phase 4 — Govern & Validate
+## Phase 4 — Govern & Secure
 
 **Row-level security** — implemented on `dim_customer`, filtering by region:
 
