@@ -6,8 +6,8 @@ A Power BI data modeling project transforming a disorganized 23 tables into a go
 |---|---|
 | ![Before](docs/all_tables.jpg) | ![After](docs/final_model.jpg) |
 
-#### The Problem: Unstructured Source Tables
-- **Over-fragmented architecture** — 23 tables with no grouping by roleor domain.
+#### The Problem of unstructured source tables:
+- **Over-fragmented architecture** — 23 tables with no grouping by role or domain.
 - **Tangled relational paths** — Tables connect directly to each other; one pair has three relationships at once.
 - **Scattered business entities** — Customer data split across six tables; orders split into two by year.
 - **Data quality risks** — Placeholder column names, and several tables disconnected from the rest of the model.
